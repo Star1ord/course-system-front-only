@@ -79,7 +79,7 @@ function Modules() {
         <div className="relative">
           <input
             type="text"
-            placeholder={t('searchPlaceholder')}
+            placeholder={t('Search for a module')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-maroon"
