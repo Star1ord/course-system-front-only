@@ -41,6 +41,14 @@ const translations = {
     endDate: 'End Date',
     userNotFound: 'User not found',
     
+    // Courses
+    availableCourses: 'Available Courses',
+    availableModules: 'Available Modules',
+    enroll: 'Enroll Now',
+    beginner: 'Beginner',
+    intermediate: 'Intermediate',
+    advanced: 'Advanced',
+    
     // Module Status
     completed: 'Completed',
     'in progress': 'In Progress',
@@ -99,6 +107,14 @@ const translations = {
     startDate: 'Дата начала',
     endDate: 'Дата окончания',
     userNotFound: 'Пользователь не найден',
+    
+    // Courses
+    availableCourses: 'Доступные курсы',
+    availableModules: 'Доступные модули',
+    enroll: 'Записаться',
+    beginner: 'Начинающий',
+    intermediate: 'Средний',
+    advanced: 'Продвинутый',
     
     // Module Status
     completed: 'Завершен',
