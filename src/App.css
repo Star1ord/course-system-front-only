@@ -1,0 +1,75 @@
+/* Custom colors */
+:root {
+  --maroon: #800000;
+  --maroon-dark: #600000;
+}
+
+.bg-maroon {
+  background-color: var(--maroon);
+}
+
+.bg-maroon-dark {
+  background-color: var(--maroon-dark);
+}
+
+.text-maroon {
+  color: var(--maroon);
+}
+
+/* Layout */
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Navigation */
+nav {
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+nav a.active {
+  color: var(--maroon);
+  font-weight: 600;
+}
+
+/* Buttons */
+button {
+  transition: all 0.3s ease;
+}
+
+/* Ensure footer stays at bottom */
+footer {
+  background-color: white;
+  padding: 1rem 0;
+  text-align: center;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* App-specific styles */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+} 
