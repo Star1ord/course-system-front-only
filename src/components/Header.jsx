@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function Header({ onLogin, onRegister, onLangChange }) {
+export default function Header({ onLogin, onRegister }) {
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -23,7 +23,7 @@ export default function Header({ onLogin, onRegister, onLangChange }) {
           <div className="flex items-center">
             <img src="/logo.svg" alt="Logo" className="h-8 md:h-10 mr-2 md:mr-4" />
             <h1 className="text-base md:text-xl font-bold hidden sm:block">
-              Faculty of Computing, Engineering and Media
+              {t('facultyName')}
             </h1>
           </div>
 
@@ -45,14 +45,14 @@ export default function Header({ onLogin, onRegister, onLangChange }) {
           <div className="hidden md:flex items-center gap-4">
             <div className="flex gap-2">
               <button 
-                onClick={() => onLangChange('en')}
-                className="px-2 py-1 rounded hover:bg-maroon-dark"
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 rounded hover:bg-maroon-dark ${language === 'en' ? 'bg-maroon-dark' : ''}`}
               >
                 EN
               </button>
               <button 
-                onClick={() => onLangChange('ru')}
-                className="px-2 py-1 rounded hover:bg-maroon-dark"
+                onClick={() => setLanguage('ru')}
+                className={`px-2 py-1 rounded hover:bg-maroon-dark ${language === 'ru' ? 'bg-maroon-dark' : ''}`}
               >
                 RU
               </button>
@@ -119,14 +119,14 @@ export default function Header({ onLogin, onRegister, onLangChange }) {
           <div className="md:hidden mt-4 space-y-4">
             <div className="flex justify-center gap-2">
               <button 
-                onClick={() => onLangChange('en')}
-                className="px-2 py-1 rounded hover:bg-maroon-dark"
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 rounded hover:bg-maroon-dark ${language === 'en' ? 'bg-maroon-dark' : ''}`}
               >
                 EN
               </button>
               <button 
-                onClick={() => onLangChange('ru')}
-                className="px-2 py-1 rounded hover:bg-maroon-dark"
+                onClick={() => setLanguage('ru')}
+                className={`px-2 py-1 rounded hover:bg-maroon-dark ${language === 'ru' ? 'bg-maroon-dark' : ''}`}
               >
                 RU
               </button>
