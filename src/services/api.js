@@ -4,100 +4,146 @@ const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-// Mock interceptor for development
-api.interceptors.request.use(config => {
-  const userData = localStorage.getItem('userData');
-  if (userData) {
-    const { token } = JSON.parse(userData);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+// Mock request interceptor
+api.interceptors.request.use(
+  (config) => {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData && userData.token) {
+      config.headers.Authorization = `Bearer ${userData.token}`;
     }
-  }
-  return config;
-});
-
-// Mock response interceptor
-api.interceptors.response.use(
-  response => response,
-  error => {
-    // For development, return mock data instead of making actual API calls
-    if (error.config.url.includes('/api')) {
-      return Promise.resolve({
-        data: mockApi[error.config.url.split('/api/')[1]]()
-      });
-    }
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   }
 );
 
-// Mock API functions
+// Mock data for development
 const mockApi = {
-  'auth/login': () => ({
+  'auth/login': {
     user: {
       id: 1,
-      first_name: "Aliya",
-      surname: "Yermakhan",
-      email: "aliya@dmuk.edu.kz",
-      user_type: "student"
+      first_name: 'Togzhan',
+      surname: 'Yermekbayeva',
+      email: 'example@dmuk.edu.kz',
+      role: 'Student',
+      department: 'Computer Science',
+      user_type: 'student'
     },
-    token: "mock-jwt-token"
-  }),
-  'auth/register': () => ({
+    token: 'mock-jwt-token'
+  },
+  'auth/register': {
     user: {
-      id: 2,
-      first_name: "New",
-      surname: "User",
-      email: "new@dmuk.edu.kz",
-      user_type: "student"
+      id: 1,
+      first_name: 'Togzhan',
+      surname: 'Yermekbayeva',
+      email: 'example@dmuk.edu.kz',
+      role: 'Student',
+      department: 'Computer Science',
+      user_type: 'student'
     },
-    token: "mock-jwt-token"
-  }),
-  'courses': () => [
+    token: 'mock-jwt-token'
+  },
+  'courses': [
     {
       id: 1,
-      title: "Computer Science",
-      description: "The Computer Science program provides a solid foundation in programming, algorithms, and software systems.",
-      contents: "Students will study key topics including object-oriented programming, database design, functional languages like Scala, and operating systems."
+      title: 'Introduction to Programming',
+      description: 'Learn the basics of programming',
+      duration: '12 weeks',
+      level: 'Beginner'
     },
     {
       id: 2,
-      title: "Software Engineering",
-      description: "This program focuses on the methodologies, tools, and techniques required to build large-scale software systems.",
-      contents: "Topics include agile development, user-centered design, testing frameworks, and knowledge-based systems."
+      title: 'Web Development',
+      description: 'Learn modern web development',
+      duration: '16 weeks',
+      level: 'Intermediate'
     }
   ],
-  'modules': () => [
+  'modules': [
     {
       id: 1,
-      code: "COS1903",
-      title: "Scala Programming",
-      description: "This module introduces students to functional programming using Scala.",
-      contents: "Topics include recursion, pattern matching, collections, and functional design principles.",
-      course_id: 1
+      name: 'Python Basics',
+      course: 'Introduction to Programming',
+      description: 'Learn Python programming fundamentals',
+      duration: '4 weeks',
+      level: 'Beginner',
+      status: 'not started'
     },
     {
       id: 2,
-      code: "COS1920",
-      title: "Database Management",
-      description: "A foundational module in relational database design, SQL, and data modeling.",
-      contents: "SQL, relational modeling, normalization, and query optimization with hands-on practice.",
-      course_id: 1
+      name: 'HTML & CSS',
+      course: 'Web Development',
+      description: 'Learn web development basics',
+      duration: '6 weeks',
+      level: 'Beginner',
+      status: 'in progress'
     }
   ],
-  'user/profile': () => ({
+  'user/profile': {
     id: 1,
-    first_name: "Aliya",
-    surname: "Yermakhan",
-    email: "aliya@dmuk.edu.kz",
-    user_type: "student",
-    registered_courses: [
+    first_name: 'Togzhan',
+    surname: 'Yermekbayeva',
+    email: 'example@dmuk.edu.kz',
+    role: 'Student',
+    department: 'Computer Science',
+    user_type: 'student',
+    registered_modules: [
       {
         id: 1,
-        title: "Computer Science",
-        progress: 75
+        name: 'Python Basics',
+        course: 'Introduction to Programming',
+        status: 'completed',
+        progress: 100,
+        start_date: '2024-01-01',
+        end_date: '2024-04-01'
+      },
+      {
+        id: 2,
+        name: 'HTML & CSS',
+        course: 'Web Development',
+        status: 'in progress',
+        progress: 60,
+        start_date: '2024-04-01',
+        end_date: '2024-07-01'
+      },
+      {
+        id: 3,
+        name: 'JavaScript Fundamentals',
+        course: 'Web Development',
+        status: 'not started',
+        progress: 0,
+        start_date: '2024-07-01',
+        end_date: '2024-10-01'
       }
     ]
-  })
+  }
 };
+
+// Mock response interceptor
+api.interceptors.response.use(
+  (response) => {
+    // Check if the request URL matches any mock endpoint
+    const url = response.config.url;
+    const endpoint = url.startsWith('/') ? url.substring(1) : url;
+    
+    if (mockApi[endpoint]) {
+      return { data: mockApi[endpoint] };
+    }
+
+    return response;
+  },
+  (error) => {
+    // If the request fails, check if we have mock data for this endpoint
+    const url = error.config.url;
+    const endpoint = url.startsWith('/') ? url.substring(1) : url;
+    
+    if (mockApi[endpoint]) {
+      return Promise.resolve({ data: mockApi[endpoint] });
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default api; 
