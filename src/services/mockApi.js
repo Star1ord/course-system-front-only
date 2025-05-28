@@ -71,210 +71,294 @@ const mockCourses = [
   }
 ];
 
-const mockModules = [
+export const mockModules = [
   {
     id: 1,
-    code: "COS1903",
+    code: 'COS1903',
     title: {
-      en: "Scala Programming",
-      ru: "Программирование на Scala"
+      en: 'Scala Programming',
+      ru: 'Программирование на Scala'
     },
     description: {
-      en: "This module introduces students to functional programming using Scala, a language known for its scalability and expressiveness. Students will explore recursion, immutability, and pattern matching.",
-      ru: "Этот модуль знакомит студентов с функциональным программированием на Scala, языке, известном своей масштабируемостью и выразительностью. Студенты изучат рекурсию, неизменяемость и сопоставление с образцом."
+      en: 'Introduction to Scala programming language and functional programming concepts.',
+      ru: 'Введение в язык программирования Scala и концепции функционального программирования.'
     },
     contents: {
-      en: "By the end of the module, learners will build functional programs and understand the role of Scala in data processing and backend development.",
-      ru: "К концу модуля учащиеся будут создавать функциональные программы и понимать роль Scala в обработке данных и серверной разработке."
+      en: 'Topics include recursion, pattern matching, collections, and functional design principles.',
+      ru: 'Темы включают рекурсию, сопоставление с образцом, коллекции и принципы функционального проектирования.'
     },
-    course_id: 1
+    course_id: 1,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 2,
-    code: "COS1920",
+    code: 'COS1920',
     title: {
-      en: "Database Management",
-      ru: "Управление базами данных"
+      en: 'Database Management',
+      ru: 'Управление базами данных'
     },
     description: {
-      en: "A foundational module in relational database design, SQL, and data modeling. It covers normalization, entity-relationship modeling, and efficient query writing.",
-      ru: "Фундаментальный модуль по проектированию реляционных баз данных, SQL и моделированию данных. Он охватывает нормализацию, моделирование связей сущностей и написание эффективных запросов."
+      en: 'Fundamentals of database design and management.',
+      ru: 'Основы проектирования и управления базами данных.'
     },
     contents: {
-      en: "Students will practice creating databases, writing optimized queries, and managing integrity constraints in PostgreSQL.",
-      ru: "Студенты будут практиковаться в создании баз данных, написании оптимизированных запросов и управлении ограничениями целостности в PostgreSQL."
+      en: 'SQL, relational modeling, normalization, and query optimization with hands-on practice.',
+      ru: 'SQL, реляционное моделирование, нормализация и оптимизация запросов с практическими занятиями.'
     },
-    course_id: 1
+    course_id: 1,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 3,
-    code: "COS2905",
+    code: 'COS2905',
     title: {
-      en: "Object Oriented Programming (Java)",
-      ru: "Объектно-ориентированное программирование (Java)"
+      en: 'Object Oriented Programming (Java)',
+      ru: 'Объектно-ориентированное программирование (Java)'
     },
     description: {
-      en: "This module focuses on core OOP concepts such as inheritance, encapsulation, and polymorphism using Java. Students will design and implement class hierarchies and reusable code.",
-      ru: "Этот модуль фокусируется на основных концепциях ООП, таких как наследование, инкапсуляция и полиморфизм с использованием Java. Студенты будут проектировать и реализовывать иерархии классов и переиспользуемый код."
+      en: 'Advanced object-oriented programming concepts using Java.',
+      ru: 'Продвинутые концепции объектно-ориентированного программирования с использованием Java.'
     },
     contents: {
-      en: "Projects include building command-line applications and basic graphical user interfaces.",
-      ru: "Проекты включают создание консольных приложений и базовых графических пользовательских интерфейсов."
+      en: 'Encapsulation, inheritance, polymorphism using Java. Project-based learning with OOP design.',
+      ru: 'Инкапсуляция, наследование, полиморфизм с использованием Java. Обучение на основе проектов с ООП дизайном.'
     },
-    course_id: 1
+    course_id: 1,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   },
   {
     id: 4,
-    code: "COS2910",
+    code: 'COS2910',
     title: {
-      en: "Database Management",
-      ru: "Управление базами данных"
+      en: 'Advanced Database Systems',
+      ru: 'Продвинутые системы баз данных'
     },
     description: {
-      en: "An advanced continuation of Database Management, this module explores complex SQL queries, transactions, and indexing strategies. It also introduces NoSQL concepts.",
-      ru: "Продвинутое продолжение курса по управлению базами данных, этот модуль исследует сложные SQL-запросы, транзакции и стратегии индексирования. Также вводит концепции NoSQL."
+      en: 'Advanced concepts in database systems and management.',
+      ru: 'Продвинутые концепции в системах и управлении базами данных.'
     },
     contents: {
-      en: "Students will work with stored procedures, triggers, and understand the trade-offs of relational vs non-relational models.",
-      ru: "Студенты будут работать с хранимыми процедурами, триггерами и понимать компромиссы между реляционными и нереляционными моделями."
+      en: 'Complex SQL queries, indexing strategies, stored procedures, and introduction to NoSQL systems.',
+      ru: 'Сложные SQL-запросы, стратегии индексации, хранимые процедуры и введение в NoSQL системы.'
     },
-    course_id: 1
+    course_id: 1,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   },
   {
     id: 5,
-    code: "SE3906",
+    code: 'SE3906',
     title: {
-      en: "Interaction Design",
-      ru: "Дизайн взаимодействия"
+      en: 'Interaction Design',
+      ru: 'Дизайн взаимодействия'
     },
     description: {
-      en: "Students explore how to design interactive systems that prioritize usability and user satisfaction. This module emphasizes iterative design, prototyping, and evaluation.",
-      ru: "Студенты изучают, как проектировать интерактивные системы, которые отдают приоритет удобству использования и удовлетворенности пользователей. Этот модуль подчеркивает итеративное проектирование, прототипирование и оценку."
+      en: 'Principles and practices of user interface and interaction design.',
+      ru: 'Принципы и практики дизайна пользовательского интерфейса и взаимодействия.'
     },
     contents: {
-      en: "Assignments include developing user personas, wireframes, and conducting usability tests.",
-      ru: "Задания включают разработку пользовательских персонажей, каркасов и проведение тестов на удобство использования."
+      en: 'User experience design principles, wireframing, prototyping, usability testing, and heuristics.',
+      ru: 'Принципы дизайна пользовательского опыта, создание макетов, прототипирование, тестирование удобства использования и эвристики.'
     },
-    course_id: 2
+    course_id: 2,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 6,
-    code: "SE3410",
+    code: 'SE3410',
     title: {
-      en: "Web Application Penetration Testing",
-      ru: "Тестирование на проникновение веб-приложений"
+      en: 'Web Application Penetration Testing',
+      ru: 'Тестирование на проникновение веб-приложений'
     },
     description: {
-      en: "Focuses on identifying and exploiting common web vulnerabilities. Students will learn how to test applications using industry tools and standards.",
-      ru: "Фокусируется на выявлении и использовании распространенных уязвимостей веб-приложений. Студенты научатся тестировать приложения с использованием отраслевых инструментов и стандартов."
+      en: 'Security testing and vulnerability assessment of web applications.',
+      ru: 'Тестирование безопасности и оценка уязвимостей веб-приложений.'
     },
     contents: {
-      en: "Topics include OWASP Top 10, SQL injection, XSS, CSRF, and mitigation strategies.",
-      ru: "Темы включают OWASP Top 10, SQL-инъекции, XSS, CSRF и стратегии смягчения."
+      en: 'OWASP Top 10, SQLi, XSS, CSRF, pentesting tools, and mitigation techniques for web applications.',
+      ru: 'OWASP Top 10, SQL-инъекции, XSS, CSRF, инструменты тестирования на проникновение и методы защиты веб-приложений.'
     },
-    course_id: 2
+    course_id: 2,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   },
   {
     id: 7,
-    code: "SE3406",
+    code: 'SE3406',
     title: {
-      en: "Fuzzy Logic & Knowledge Based Systems",
-      ru: "Нечеткая логика и системы на основе знаний"
+      en: 'Fuzzy Logic & Knowledge Based Systems',
+      ru: 'Нечеткая логика и системы, основанные на знаниях'
     },
     description: {
-      en: "This module introduces students to fuzzy logic theory and its application in building intelligent systems. Students will explore fuzzy inference engines and rule-based decision making.",
-      ru: "Этот модуль знакомит студентов с теорией нечеткой логики и ее применением в построении интеллектуальных систем. Студенты изучат механизмы нечеткого вывода и принятие решений на основе правил."
+      en: 'Introduction to fuzzy logic and knowledge-based systems.',
+      ru: 'Введение в нечеткую логику и системы, основанные на знаниях.'
     },
     contents: {
-      en: "Use cases include fuzzy control systems and decision support applications.",
-      ru: "Примеры использования включают системы нечеткого управления и приложения поддержки принятия решений."
+      en: 'Fuzzy inference, rule-based logic, reasoning under uncertainty, and expert system design.',
+      ru: 'Нечеткий вывод, логика на основе правил, рассуждения в условиях неопределенности и проектирование экспертных систем.'
     },
-    course_id: 2
+    course_id: 2,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 8,
-    code: "SE3613",
+    code: 'SE3613',
     title: {
-      en: "Data Mining",
-      ru: "Добыча данных"
+      en: 'Data Mining',
+      ru: 'Добыча данных'
     },
     description: {
-      en: "Covers methods of discovering patterns and insights in large datasets. Students learn classification, clustering, and association rule learning.",
-      ru: "Охватывает методы обнаружения паттернов и инсайтов в больших наборах данных. Студенты изучают классификацию, кластеризацию и обучение правилам ассоциации."
+      en: 'Techniques and tools for data mining and analysis.',
+      ru: 'Техники и инструменты для добычи и анализа данных.'
     },
     contents: {
-      en: "Practical components include using tools like WEKA or Python libraries for mining structured data.",
-      ru: "Практические компоненты включают использование инструментов, таких как WEKA или библиотеки Python для добычи структурированных данных."
+      en: 'Classification, clustering, association rule mining using Python or WEKA. CRISP-DM process model.',
+      ru: 'Классификация, кластеризация, поиск ассоциативных правил с использованием Python или WEKA. Модель процесса CRISP-DM.'
     },
-    course_id: 2
+    course_id: 2,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   },
   {
     id: 9,
-    code: "SE3901",
+    code: 'SE3901',
     title: {
-      en: "C Programming",
-      ru: "Программирование на C"
+      en: 'C Programming',
+      ru: 'Программирование на C'
     },
     description: {
-      en: "Students will develop low-level programming skills in C, focusing on memory management, pointers, and system-level programming.",
-      ru: "Студенты разовьют навыки низкоуровневого программирования на C, фокусируясь на управлении памятью, указателях и системном программировании."
+      en: 'Advanced C programming concepts and system-level programming.',
+      ru: 'Продвинутые концепции программирования на C и системное программирование.'
     },
     contents: {
-      en: "This module prepares students for future courses in systems programming and embedded development.",
-      ru: "Этот модуль готовит студентов к будущим курсам по системному программированию и разработке встраиваемых систем."
+      en: 'C language memory management, pointers, arrays, and low-level system interaction.',
+      ru: 'Управление памятью в языке C, указатели, массивы и низкоуровневое системное взаимодействие.'
     },
-    course_id: 3
+    course_id: 3,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 10,
-    code: "SE3902",
+    code: 'SE3902',
     title: {
-      en: "Computer Law and Cyber Security Management",
-      ru: "Компьютерное право и управление кибербезопасностью"
+      en: 'Computer Law and Cyber Security Management',
+      ru: 'Компьютерное право и управление кибербезопасностью'
     },
     description: {
-      en: "Covers the legal and organizational aspects of cybersecurity. Topics include data protection laws, risk management, and compliance frameworks.",
-      ru: "Охватывает правовые и организационные аспекты кибербезопасности. Темы включают законы о защите данных, управление рисками и рамки соответствия."
+      en: 'Legal and management aspects of cybersecurity.',
+      ru: 'Правовые и управленческие аспекты кибербезопасности.'
     },
     contents: {
-      en: "Students analyze case studies and develop policy recommendations based on best practices.",
-      ru: "Студенты анализируют кейсы и разрабатывают рекомендации по политике на основе лучших практик."
+      en: 'Kazakhstan and global cyber laws, data privacy, security policies, and risk management frameworks.',
+      ru: 'Киберзаконы Казахстана и мира, конфиденциальность данных, политики безопасности и рамки управления рисками.'
     },
-    course_id: 3
+    course_id: 3,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   },
   {
     id: 11,
-    code: "SE3903",
+    code: 'SE3903',
     title: {
-      en: "Linux Security",
-      ru: "Безопасность Linux"
+      en: 'Linux Security',
+      ru: 'Безопасность Linux'
     },
     description: {
-      en: "This module teaches students how to secure Linux operating systems and services. Topics include access control, file permissions, and firewall configuration.",
-      ru: "Этот модуль учит студентов, как защищать операционные системы и сервисы Linux. Темы включают контроль доступа, разрешения файлов и настройку брандмауэра."
+      en: 'Security practices and tools for Linux systems.',
+      ru: 'Практики и инструменты безопасности для систем Linux.'
     },
     contents: {
-      en: "Labs involve configuring secure SSH, managing audit logs, and hardening distributions.",
-      ru: "Лабораторные работы включают настройку безопасного SSH, управление журналами аудита и укрепление дистрибутивов."
+      en: 'Linux user/group security, firewall config, SSH, system auditing, and secure system setup.',
+      ru: 'Безопасность пользователей/групп Linux, настройка брандмауэра, SSH, аудит системы и безопасная настройка системы.'
     },
-    course_id: 3
+    course_id: 3,
+    instructor: {
+      id: 1,
+      first_name: 'Ayan',
+      surname: 'Saparov',
+      email: 'ayan@dmuk.edu.kz',
+      position: 'Senior Lecturer'
+    }
   },
   {
     id: 12,
-    code: "SE3904",
+    code: 'SE3904',
     title: {
-      en: "Cyber Threat Intelligence and Incident Response",
-      ru: "Киберразведка и реагирование на инциденты"
+      en: 'Cyber Threat Intelligence and Incident Response',
+      ru: 'Киберразведка угроз и реагирование на инциденты'
     },
     description: {
-      en: "Focuses on how to identify, analyze, and respond to cyber threats. Students learn about threat modeling, SOC operations, and incident handling techniques.",
-      ru: "Фокусируется на том, как выявлять, анализировать и реагировать на киберугрозы. Студенты изучают моделирование угроз, операции SOC и методы обработки инцидентов."
+      en: 'Threat intelligence and incident response in cybersecurity.',
+      ru: 'Разведка угроз и реагирование на инциденты в кибербезопасности.'
     },
     contents: {
-      en: "Scenarios include building response plans and simulating cyber attacks in lab environments.",
-      ru: "Сценарии включают создание планов реагирования и моделирование кибератак в лабораторных условиях."
+      en: 'Threat modeling, incident handling, cyber forensics basics, and SOC workflows.',
+      ru: 'Моделирование угроз, обработка инцидентов, основы кибер-криминалистики и рабочие процессы SOC.'
     },
-    course_id: 3
+    course_id: 3,
+    instructor: {
+      id: 2,
+      first_name: 'Nurzhan',
+      surname: 'Amir',
+      email: 'nurzhan@dmuk.edu.kz',
+      position: 'Instructor'
+    }
   }
 ];
 

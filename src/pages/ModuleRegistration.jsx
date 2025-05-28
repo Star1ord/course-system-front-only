@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
-import ReactConfetti from 'react-confetti';
+import { useLanguage } from '../contexts/LanguageContext';
+import mockApi, { getTranslatedContent } from '../services/mockApi';
 
 function ModuleRegistration() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { user } = useAuth();
   const [module, setModule] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { t, language } = useLanguage();
+
   const [formData, setFormData] = useState({
-    preferred_track: '',
-    notes: ''
+    previous_experience: '',
+    learning_goals: '',
+    special_requirements: ''
   });
 
   useEffect(() => {
     const fetchModule = async () => {
       try {
-        const response = await api.get(`/modules/${id}`);
-        setModule(response.data);
+        const moduleData = await mockApi.getModule(id);
+        setModule(moduleData);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch module details');
@@ -33,6 +33,20 @@ function ModuleRegistration() {
     fetchModule();
   }, [id]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Simulate registration
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/modules');
+      }, 2000);
+    } catch (err) {
+      setError('Failed to register for module');
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -41,139 +55,89 @@ function ModuleRegistration() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess(false);
-    
-    if (!user) {
-      setError('Please log in to register for modules');
-      return;
-    }
-
-    try {
-      console.log('Starting registration process...');
-      
-      // First register for the module
-      console.log('Sending registration request...');
-      const registerResponse = await api.post(`/modules/${id}/register`);
-      console.log('Registration response:', registerResponse.data);
-
-      // Only proceed with updating details if registration was successful
-      if (registerResponse.data.message === 'Successfully registered for module') {
-        // Then update registration details
-        console.log('Sending registration details...');
-        const detailsResponse = await api.post(`/modules/${id}/registration-details`, formData);
-        console.log('Details update response:', detailsResponse.data);
-        
-        // Show success message and confetti
-        setSuccess(true);
-        setShowConfetti(true);
-        
-        // Hide confetti after 5 seconds
-        setTimeout(() => {
-          setShowConfetti(false);
-          // Navigate back to module details after confetti stops
-          setTimeout(() => {
-            navigate(`/modules/${id}`);
-          }, 1000);
-        }, 5000);
-      }
-    } catch (err) {
-      console.error('Registration error:', err);
-      if (err.response?.status === 400 && err.response?.data?.error === 'Already registered for this module') {
-        setError('You are already registered for this module.');
-      } else {
-        setError(err.response?.data?.error || 'Failed to register for module. Please try again.');
-      }
-    }
-  };
-
-  const handleBack = () => {
-    navigate(`/modules/${id}`);
-  };
-
-  if (loading) return <div className="text-center py-8">Loading...</div>;
+  if (loading) return <div className="text-center py-8">{t('loading')}</div>;
   if (error) return <div className="text-center text-red-600 py-8">{error}</div>;
-  if (!module) return <div className="text-center py-8">Module not found</div>;
+  if (!module) return <div className="text-center py-8">{t('moduleNotFound')}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {showConfetti && <ReactConfetti />}
-      <div className="max-w-2xl mx-auto">
-        <button
-          onClick={handleBack}
-          className="inline-flex items-center text-maroon hover:text-maroon-dark mb-6"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-          </svg>
-          Back to Module Details
-        </button>
-
-        {success ? (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-green-500 text-white p-6">
-              <h1 className="text-3xl font-bold">Registration Successful!</h1>
-              <p className="text-lg mt-2">You have successfully registered for {module.title}</p>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600">You will be redirected to the module details page shortly...</p>
-            </div>
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-maroon text-white p-6">
+            <h1 className="text-3xl font-bold mb-2">
+              {t('registerForModule')}: {module.code} - {getTranslatedContent(module.title, language)}
+            </h1>
           </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-maroon text-white p-6">
-              <h1 className="text-3xl font-bold">Register for {module.title}</h1>
-              <p className="text-lg mt-2">{module.code}</p>
-            </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <label htmlFor="preferred_track" className="block text-sm font-medium text-gray-700 mb-2">
-                  Preferred Track
-                </label>
-                <select
-                  id="preferred_track"
-                  name="preferred_track"
-                  value={formData.preferred_track}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-maroon focus:border-transparent"
-                  required
-                >
-                  <option value="">Select a track</option>
-                  <option value="morning">Morning</option>
-                  <option value="afternoon">Afternoon</option>
-                  <option value="evening">Evening</option>
-                </select>
+          <div className="p-6 space-y-6">
+            {success ? (
+              <div className="text-center py-8">
+                <div className="text-green-600 text-xl mb-4">{t('registrationSuccess')}</div>
+                <p className="text-gray-600">{t('redirectingToModules')}</p>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {t('Previous Experience')}
+                  </label>
+                  <textarea
+                    name="previous_experience"
+                    value={formData.previous_experience}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon"
+                    rows="3"
+                    placeholder={t('describeExperience')}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
-                  Additional Notes
-                </label>
-                <textarea
-                  id="notes"
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-maroon focus:border-transparent"
-                  placeholder="Any additional information you'd like to provide..."
-                />
-              </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {t('Learning Goals')}
+                  </label>
+                  <textarea
+                    name="learning_goals"
+                    value={formData.learning_goals}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon"
+                    rows="3"
+                    placeholder={t('describeGoals')}
+                  />
+                </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="w-full px-8 py-2 bg-maroon text-white rounded hover:bg-maroon-dark transition-colors duration-200"
-                >
-                  Complete Registration
-                </button>
-              </div>
-            </form>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {t('Special Requirements')}
+                  </label>
+                  <textarea
+                    name="special_requirements"
+                    value={formData.special_requirements}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon"
+                    rows="3"
+                    placeholder={t('describeRequirements')}
+                  />
+                </div>
+
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/modules/${id}`)}
+                    className="px-4 py-2 border border-maroon text-maroon rounded hover:bg-maroon hover:text-white transition-colors duration-200"
+                  >
+                    {t('cancel')}
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-maroon text-white rounded hover:bg-maroon-dark transition-colors duration-200"
+                  >
+                    {t('submitRegistration')}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
