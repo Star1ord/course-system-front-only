@@ -81,11 +81,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <LanguageProvider>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
-      </LanguageProvider>
+      <AppContent />
     </Router>
   );
 }

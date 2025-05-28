@@ -66,7 +66,6 @@ const translations = {
     edit: 'Edit',
     delete: 'Delete',
     view: 'View',
-    enroll: 'Enroll',
   },
   ru: {
     // Header
@@ -133,7 +132,6 @@ const translations = {
     edit: 'Редактировать',
     delete: 'Удалить',
     view: 'Просмотр',
-    enroll: 'Записаться',
   }
 };
 
