@@ -1,65 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import mockApi, { getTranslatedContent } from '../services/mockApi';
-import ModuleRegistrationForm from '../components/ModuleRegistrationForm';
 
 function Modules() {
+  const navigate = useNavigate();
+  const { t, language } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [courses, setCourses] = useState([]);
+  const [modules, setModules] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchParams] = useSearchParams();
-  const [selectedModule, setSelectedModule] = useState(null);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const { user } = useAuth();
-  const { t, language } = useLanguage();
 
   useEffect(() => {
-    const fetchModules = async () => {
+    const fetchData = async () => {
       try {
         const coursesData = await mockApi.getCourses();
-        const modulesData = await mockApi.getModules();
+        setCourses(coursesData);
         
-        // Group modules by course
-        const groupedData = coursesData.map(course => ({
-          ...course,
-          modules: modulesData.filter(module => module.course_id === course.id)
-        }));
-        
-        setCourses(groupedData);
-        setLoading(false);
+        // Fetch modules for each course
+        const modulesData = {};
+        for (const course of coursesData) {
+          const courseModules = await mockApi.getModules(course.id);
+          modulesData[course.id] = courseModules;
+        }
+        setModules(modulesData);
       } catch (err) {
-        setError('Failed to fetch modules');
+        setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchModules();
+    fetchData();
   }, []);
 
-  const handleRegisterClick = (module) => {
-    setSelectedModule(module);
+  const handleViewDetails = (moduleId) => {
+    navigate(`/modules/${moduleId}`);
   };
 
-  const handleRegister = async (moduleId, formData) => {
-    try {
-      // Simulate registration success
-      setRegistrationSuccess(true);
-      setSelectedModule(null);
-      
-      // Refresh the module list
-      const coursesData = await mockApi.getCourses();
-      const modulesData = await mockApi.getModules();
-      const groupedData = coursesData.map(course => ({
-        ...course,
-        modules: modulesData.filter(module => module.course_id === course.id)
-      }));
-      setCourses(groupedData);
-    } catch (err) {
-      setError('Failed to register for module');
-    }
+  const handleRegister = (moduleId) => {
+    navigate(`/modules/${moduleId}/register`);
   };
 
   const highlightText = (text, searchTerm) => {
@@ -77,16 +59,16 @@ function Modules() {
     .filter(course => !courseId || course.id === parseInt(courseId))
     .map(course => ({
       ...course,
-      modules: course.modules.filter(module => 
+      modules: modules[course.id]?.filter(module => 
         module.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getTranslatedContent(module.title, language).toLowerCase().includes(searchTerm.toLowerCase()) ||
         getTranslatedContent(course.title, language).toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      ) || []
     }))
     .filter(course => course.modules.length > 0);
 
   if (loading) return <div className="text-center py-8">{t('loading')}</div>;
-  if (error) return <div className="text-center text-red-600 py-8">{error}</div>;
+  if (error) return <div className="text-center text-red-600 py-8">{t('error')}: {error}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -124,30 +106,30 @@ function Modules() {
                     </div>
                     <div className="flex flex-wrap gap-3">
                       <button
-                        onClick={() => window.location.href = `/modules/${module.id}`}
+                        onClick={() => handleViewDetails(module.id)}
                         className="inline-flex items-center px-4 py-2 border border-maroon text-maroon rounded hover:shadow-md hover:scale-105 hover:border-maroon-dark transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-maroon focus:ring-opacity-50"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                           <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
                         </svg>
-                        {t('view')}
+                        {t('View Details')}
                       </button>
                       <button
-                        onClick={() => handleRegisterClick(module)}
+                        onClick={() => handleRegister(module.id)}
                         className="inline-flex items-center px-4 py-2 bg-maroon text-white rounded hover:bg-maroon-dark transition-colors duration-200"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                         </svg>
-                        {t('enroll')}
+                        {t('register')}
                       </button>
                     </div>
                     {module.instructor && (
                       <div className="mt-2">
-                        <h4 className="font-semibold text-gray-700 mb-2">{t('instructor')}:</h4>
+                        <h4 className="font-semibold text-gray-700 mb-2">{t('Instructor')}:</h4>
                         <p className="text-gray-600">
-                          {module.instructor.first_name} {module.instructor.surname} - {module.instructor.position}
+                          {module.instructor.first_name} {module.instructor.surname} - {getTranslatedContent(module.instructor.position, language)}
                         </p>
                       </div>
                     )}
@@ -158,22 +140,6 @@ function Modules() {
           </div>
         ))}
       </div>
-
-      {/* Registration Modal */}
-      {selectedModule && (
-        <ModuleRegistrationForm
-          module={selectedModule}
-          onClose={() => setSelectedModule(null)}
-          onRegister={handleRegister}
-        />
-      )}
-
-      {/* Success Message */}
-      {registrationSuccess && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg">
-          {t('successfullyRegistered')}
-        </div>
-      )}
     </div>
   );
 }
